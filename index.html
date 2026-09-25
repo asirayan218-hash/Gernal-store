@@ -1,1 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.1">
+    <title>Abdul Subhan General Store | Online Grocery & Daily Essentials</title>
+    <style>
+        :root {
+            --primary-color: #121212;
+            --secondary-color: #ff9800;
+            --dark-color: #222222;
+            --light-bg: #f4f6f4;
+            --card-bg: #ffffff;
+            --border-color: #d1d5db;
+            --header-bg: #ffffff;
+            --menu-bg: #121212;
+            --text-color: #222222;
+        }
 
+        [data-theme="dark"] {
+            --primary-color: #4caf50;
+            --secondary-color: #ffa726;
+            --dark-color: #ffffff;
+            --light-bg: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --header-bg: #1f1f1f;
+            --menu-bg: #2d2d2d;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--Light-bg);
+            color: var(--text-color);
+            padding-bottom: 140px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .announcement-bar {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            font-size: 0.75rem;
+            padding: 0.4rem;
+            font-weight: 600;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            color: var(--text-color);
+            padding: 0.8rem 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo-area h1 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        header .logo-area p {
+            font-size: 0.65rem;
+            color: #888;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: #d32f2f;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .menu-container {
+            position: relative;
+        }
+
+        .three-dot-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-color);
+            font-weight: bold;
+            padding: 0 5px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 35px;
+            background: var(--menu-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 170px;
+            z-index: 1000;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 14px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.82rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        #profileModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--menu-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 2000;
+            width: 300px;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        #profileModal h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        #profileModal p {
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+        }
+
+        .profile-input {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0.8rem;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=600') center/cover;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-banner h2 {
+            font-size: 1.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .hero-banner p {
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .shop-now-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .promo-banner {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px dashed #4caf50;
+            padding: 10px 12px;
+            text-align: center;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 0.1rem;
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 0.6rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card img {
+            width: 100%;
+            height: 105px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 0.4rem;
+            background-color: #eee;
+        }
+
+        .card h3 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .card p.variety {
+            font-size: 0.72rem;
+            color: #888;
+            margin-bottom: 0.3rem;
+            flex-grow: 1;
+        }
+
+        .card p.price {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 0.5rem;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 0.4rem;
+        }
+
+        .qty-btn {
+            background-color: var(--border-color);
+            color: var(--text-color);
+            border: none;
+            width: 24px;
+            height: 24px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .qty-display {
+            font-size: 0.8rem;
+            font-weight: bold;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            padding: 0.4rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .cart-item-row {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #d32f2f;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .subtotal-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: #d32f2f;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 0.5rem;
+        }
+
+        .checkout-container {
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .section-heading {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.6rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3rem;
+        }
+
+        .radio-option {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.7rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.82rem;
+        }
+
+        .radio-option input {
+            margin-top: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 0.7rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            color: var(--text-color);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-size: 0.82rem;
+        }
+
+        .complete-order-btn {
+            background-color: #2b1d1a;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        #toast-notification {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            z-index: 9999;
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        #toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55px;
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            width: 25%;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="announcement-bar">
+        🎁 Free Gift Included on orders above Rs. 3,000! Sahi Daam, Ghar Tak Paigham.
+    </div>
+
+    <header>
+        <div class="logo-area">
+            <h1>Abdul Subhan Store</h1>
+            <p>Trusted General Store</p>
+        </div>
+        
+        <div class="header-actions">
+            <button class="cart-icon-btn" onclick="switchTab('cart')">
+                🛒 <span class="cart-badge" id="cart-badge-count">0</span>
+            </button>
+            
+            <div class="menu-container">
+                <button class="three-dot-btn" onclick="toggleMenu()">⋮</button>
+                <div id="dropdownMenu" class="dropdown-menu">
+                    <a onclick="openProfile()">👤 Profile Details</a>
+                    <a onclick="toggleDarkMode()">🌓 Dark/Light Mode</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Modal -->
+    <div id="profileModal">
+        <h3>User Profile</h3>
+        <div id="profileViewMode">
+            <p><b>Naam:</b> <span id="profile-display-name">Guest User</span></p>
+            <p><b>Phone:</b> <span id="profile-display-phone">Not Provided</span></p>
+            <p><b>Address:</b> <span id="profile-display-address">Not Provided</span></p>
+            <button onclick="switchToEditProfile()" style="margin-top: 10px; width: 100%; padding: 6px; background: var(--secondary-color); color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Edit Profile</button>
+        </div>
+        <div id="profileEditMode" style="display: none;">
+            <label style="font-size:0.75rem; font-weight:bold;">Naam:</label>
+            <input type="text" id="edit-name" class="profile-input" placeholder="Apna naam likhein">
+            <label style="font-size:0.75rem; font-weight:bold;">Phone:</label>
+            <input type="text" id="edit-phone" class="profile-input" placeholder="03XXXXXXXXX">
+            <label style="font-size:0.75rem; font-weight:bold;">Address:</label>
+            <input type="text" id="edit-address" class="profile-input" placeholder="Landhi, Karachi">
+            <button onclick="saveProfile()" style="width: 100%; padding: 6px; background: var(--primary-color); color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 5px;">Save Profile</button>
+        </div>
+        <button onclick="closeProfile()" style="margin-top: 8px; width: 100%; padding: 6px; background: #d32f2f; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Band Karein</button>
+    </div>
+
+    <div class="container">
+
+        <!-- 1. HOME SECTION -->
+        <div id="home-section" class="page-section active">
+            <div class="hero-banner">
+                <h2>Welcome to Abdul Subhan Store</h2>
+                <p>Aapke ghar ka saara daily use ka samaan ab aik click par!</p>
+                <button class="shop-now-btn" onclick="switchTab('shop')">Start Shopping Now</button>
+            </div>
+            
+            <div class="promo-banner">
+                ✨ Order karein aur paein behtareen home delivery service Landhi mein!
+            </div>
+
+            <h2 class="category-title">Featured Categories</h2>
+            <div class="grid" style="grid-template-columns: 1fr; gap: 8px;">
+                <div onclick="switchTab('shop')" style="background:var(--card-bg); padding:0.8rem; border-radius:6px; border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:600; color:var(--primary-color);">
+                    🛒 Grocery & Staples (Rashan) <span>→</span>
+                </div>
+                <div onclick="switchTab('shop')" style="background:var(--card-bg); padding:0.8rem; border-radius:6px; border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:600; color:var(--primary-color);">
+                    🍿 Snacks & Munchies (Sting/Lays) <span>→</span>
+                </div>
+                <div onclick="switchTab('shop')" style="background:var(--card-bg); padding:0.8rem; border-radius:6px; border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:600; color:var(--primary-color);">
+                    🥛 Dairy & Bakery (Eggs/Bread) <span>→</span>
+                </div>
+                <div onclick="switchTab('shop')" style="background:var(--card-bg); padding:0.8rem; border-radius:6px; border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:600; color:var(--primary-color);">
+                    🧼 Personal Care & Household <span>→</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. SHOP SECTION -->
+        <div id="shop-section" class="page-section">
+            <h2 class="category-title">Grocery & Staples</h2>
+            <div class="grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300" alt="Aata">
+                    <h3>Rice</h3>
+                    <p class="variety">Good Quality (10kg)</p>
+                    <p class="price">Rs. 1,450</p>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="changeQty('Aata (10kg)', 1450, -1)">-</button>
+                        <span class="qty-display" id="qty-Aata (10kg)">0</span>
+                        <button class="qty-btn" onclick="changeQty('Aata (10kg)', 1450, 1)">+</button>
+                    </div>
+                    <button class="btn" onclick="addToCartDirect('Aata (10kg)', 1450)">Add to Cart</button>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?w=300" alt="Daal">
+                    <h3>Daal Varieties</h3>
+                    <p class="variety">Chana & Masoor (1kg)</p>
+                    <p class="price">Rs. 350</p>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="changeQty('Daal Variety (1kg)', 350, -1)">-</button>
+                        <span class="qty-display" id="qty-Daal Variety (1kg)">0</span>
+                        <button class="qty-btn" onclick="changeQty('Daal Variety (1kg)', 350, 1)">+</button>
+                    </div>
+                    <button class="btn" onclick="addToCartDirect('Daal Variety (1kg)', 350)">Add to Cart</button>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300" alt="Oil">
+                    <h3>Cooking Oil</h3>
+                    <p class="variety">Mezan / Dalda (1L)</p>
+                    <p class="price">Rs. 550</p>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="changeQty('Cooking Oil 1L', 550, -1)">-</button>
+                        <span class="qty-display" id="qty-Cooking Oil 1L">0</span>
+                        <button class="qty-btn" onclick="changeQty('Cooking Oil 1L', 550, 1)">+</button>
+                    </div>
+                    <button class="btn" onclick="addToCartDirect('Cooking Oil 1L', 550)">Add to Cart</button>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300" alt="Sting">
+                    <h3>Sting Energy Drink</h3>
+                    <p class="variety">Cold Energy (500ml)</p>
+                    <p class="price">Rs. 140</p>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="changeQty('Sting Energy 500ml', 140, -1)">-</button>
+                        <span class="qty-display" id="qty-Sting Energy 500ml">0</span>
+                        <button class="qty-btn" onclick="changeQty('Sting Energy 500ml', 140, 1)">+</button>
+                    </div>
+                    <button class="btn" onclick="addToCartDirect('Sting Energy 500ml', 140)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. CART & CHECKOUT SECTION -->
+        <div id="cart-section" class="page-section">
+            <h2 class="category-title">Your Cart & Pro Checkout</h2>
+            
+            <div id="cart-items-container"></div>
+
+            <div class="subtotal-card" id="cart-summary-box" style="display: none;">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">Rs. 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span id="cart-delivery-fee">Rs. 250</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="cart-total-display">Rs. 0</span>
+                </div>
+            </div>
+
+            <div class="checkout-container" id="checkout-form-box" style="display: none;">
+                <div class="section-heading">Delivery Method</div>
+                
+                <label class="radio-option">
+                    <input type="radio" name="delivery" value="Express Now (Within 1 hour)" checked onchange="updateDeliveryFee(250)">
+                    <div>
+                        <strong>Express Now (Within 1 hour & 5km)</strong>
+                        <p style="color:#888; font-size:0.75rem;">Landhi & nearby areas. Rs. 250.00</p>
+                    </div>
+                </label>
+
+                <label class="radio-option">
+                    <input type="radio" name="delivery" value="Standard Delivery (1-2 Days)" onchange="updateDeliveryFee(150)">
+                    <div>
+                        <strong>Standard Delivery (1-2 Days)</strong>
+                        <p style="color:#888; font-size:0.75rem;">Normal home delivery. Rs. 150.00</p>
+                    </div>
+                </label>
+
+                <div class="section-heading" style="margin-top: 1rem;">Payment Method</div>
+                
+                <label class="radio-option">
+                    <input type="radio" name="payment" value="EasyPaisa" onchange="togglePaymentFields('easypaisa')">
+                    <div><strong>EasyPaisa</strong></div>
+                </label>
+
+                <label class="radio-option">
+                    <input type="radio" name="payment" value="JazzCash" onchange="togglePaymentFields('jazzcash')">
+                    <div><strong>JazzCash</strong></div>
+                </label>
+
+                <label class="radio-option">
+                    <input type="radio" name="payment" value="Cash on Delivery (COD)" checked onchange="togglePaymentFields('cod')">
+                    <div><strong>Cash on Delivery (COD)</strong></div>
+                </label>
+
+                <div id="mobile-wallet-box" class="form-group" style="display: none; background: rgba(76,175,80,0.1); padding: 0.6rem; border-radius: 6px; margin-top: 0.5rem;">
+                    <label style="color: var(--primary-color);" id="wallet-label">Enter Transaction ID (TID):</label>
+                    <input type="text" id="transaction-id" placeholder="Enter Transaction ID / Reference No">
+                </div>
+
+                <div class="section-heading" style="margin-top: 1rem;">Billing & Shipping Details</div>
+                
+                <div class="form-group">
+                    <label>Full Name:</label>
+                    <input type="text" id="cust-name" placeholder="Apna poora naam likhein...">
+                </div>
+
+                <div class="form-group">
+                    <label>Delivery Address / Area:</label>
+                    <input type="text" id="cust-address" placeholder="Landhi Block #, House #...">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number:</label>
+                    <input type="text" id="cust-phone" placeholder="03XXXXXXXXX">
+                </div>
+
+                <button class="complete-order-btn" onclick="completeOrderWhatsApp()">Complete Order via WhatsApp</button>
+            </div>
+        </div>
+
+        <!-- 4. ABOUT SECTION -->
+        <div id="about-section" class="page-section">
+            <h2 class="category-title">About Abdul Subhan Store</h2>
+            <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 1rem; font-size: 0.85rem; line-height: 1.6;">
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Hamari Kahani</h3>
+                <p>Abdul Subhan General Store aapka apna trusted local store hai jo Landhi, Karachi mein pure aur fresh grocery items faraham karta hai.</p>
+                <p style="margin-top: 10px;"><strong>Contact:</strong>03712303171 </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast-notification">Item added to cart!</div>
+
+    <nav class="bottom-nav">
+        <button id="nav-home" class="nav-item active" onclick="switchTab('home')">
+            🏠 <span>Home</span>
+        </button>
+        <button id="nav-shop" class="nav-item" onclick="switchTab('shop')">
+            🛍️ <span>Shop</span>
+        </button>
+        <button id="nav-cart" class="nav-item" onclick="switchTab('cart')">
+            🛒 <span>Cart</span>
+        </button>
+        <button id="nav-about" class="nav-item" onclick="switchTab('about')">
+            📖 <span>About</span>
+        </button>
+    </nav>
+
+    <script>
+        let cart = {};
+        let currentDeliveryFee = 250;
+
+        window.onload = function() {
+            loadProfileData();
+        };
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
+            if (tabName === 'home') {
+                document.getElementById('home-section').classList.add('active');
+                document.getElementById('nav-home').classList.add('active');
+            } else if (tabName === 'shop') {
+                document.getElementById('shop-section').classList.add('active');
+                document.getElementById('nav-shop').classList.add('active');
+            } else if (tabName === 'cart') {
+                document.getElementById('cart-section').classList.add('active');
+                document.getElementById('nav-cart').classList.add('active');
+                renderCartPage();
+            } else if (tabName === 'about') {
+                document.getElementById('about-section').classList.add('active');
+                document.getElementById('nav-about').classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMenu() {
+            let menu = document.getElementById('dropdownMenu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function openProfile() {
+            document.getElementById('dropdownMenu').style.display = 'none';
+            document.getElementById('profileModal').style.display = 'block';
+            document.getElementById('profileViewMode').style.display = 'block';
+            document.getElementById('profileEditMode').style.display = 'none';
+            loadProfileData();
+        }
+
+        function closeProfile() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        function switchToEditProfile() {
+            document.getElementById('profileViewMode').style.display = 'none';
+            document.getElementById('profileEditMode').style.display = 'block';
+            
+            document.getElementById('edit-name').value = localStorage.getItem('abdul_subhan_name') || '';
+            document.getElementById('edit-phone').value = localStorage.getItem('abdul_subhan_phone') || '';
+            document.getElementById('edit-address').value = localStorage.getItem('abdul_subhan_address') || '';
+        }
+
+        function saveProfile() {
+            let name = document.getElementById('edit-name').value.trim();
+            let phone = document.getElementById('edit-phone').value.trim();
+            let address = document.getElementById('edit-address').value.trim();
+
+            if(!name) {
+                alert("Please enter a name!");
+                return;
+            }
+
+            localStorage.setItem('abdul_subhan_name', name);
+            localStorage.setItem('abdul_subhan_phone', phone);
+            localStorage.setItem('abdul_subhan_address', address);
+
+            loadProfileData();
+            document.getElementById('profileEditMode').style.display = 'none';
+            document.getElementById('profileViewMode').style.display = 'block';
+            showToast("Profile updated successfully!");
+        }
+
+        function loadProfileData() {
+            let name = localStorage.getItem('abdul_subhan_name');
+            let phone = localStorage.getItem('abdul_subhan_phone');
+            let address = localStorage.getItem('abdul_subhan_address');
+
+            document.getElementById('profile-display-name').innerText = name ? name : 'Guest User';
+            document.getElementById('profile-display-phone').innerText = phone ? phone : 'Not Provided';
+            document.getElementById('profile-display-address').innerText = address ? address : 'Not Provided';
+
+            if(document.getElementById('cust-name') && name) document.getElementById('cust-name').value = name;
+            if(document.getElementById('cust-phone') && phone) document.getElementById('cust-phone').value = phone;
+            if(document.getElementById('cust-address') && address) document.getElementById('cust-address').value = address;
+        }
+
+        function toggleDarkMode() {
+            let html = document.documentElement;
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+            document.getElementById('dropdownMenu').style.display = 'none';
+        }
+
+        function showToast(msg) {
+            let toast = document.getElementById('toast-notification');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        function changeQty(itemName, itemPrice, change) {
+            if (!cart[itemName]) {
+                cart[itemName] = { price: itemPrice, qty: 0 };
+            }
+            cart[itemName].qty += change;
+            
+            if (cart[itemName].qty <= 0) {
+                delete cart[itemName];
+            }
+
+            let displayElem = document.getElementById(`qty-${itemName}`);
+            if (displayElem) {
+                displayElem.innerText = cart[itemName] ? cart[itemName].qty : 0;
+            }
+
+            updateGlobalBadge();
+        }
+
+        function addToCartDirect(itemName, itemPrice) {
+            changeQty(itemName, itemPrice, 1);
+            showToast(`${itemName} cart mein add ho gaya!`);
+        }
+
+        function removeFromCart(itemName) {
+            delete cart[itemName];
+            let displayElem = document.getElementById(`qty-${itemName}`);
+            if (displayElem) displayElem.innerText = 0;
+            renderCartPage();
+            updateGlobalBadge();
+        }
+
+        function updateGlobalBadge() {
+            let totalCount = 0;
+            for (let item in cart) {
+                totalCount += cart[item].qty;
+            }
+            document.getElementById('cart-badge-count').innerText = totalCount;
+        }
+
+        function updateDeliveryFee(fee) {
+            currentDeliveryFee = fee;
+            renderCartPage();
+        }
+
+        function togglePaymentFields(type) {
+            let box = document.getElementById('mobile-wallet-box');
+            let label = document.getElementById('wallet-label');
+            if (type === 'easypaisa' || type === 'jazzcash') {
+                box.style.display = 'block';
+                label.innerText = `Enter ${type} Transaction ID (TID):`;
+            } else {
+                box.style.display = 'none';
+            }
+        }
+
+        function renderCartPage() {
+            let container = document.getElementById('cart-items-container');
+            let summaryBox = document.getElementById('cart-summary-box');
+            let checkoutBox = document.getElementById('checkout-form-box');
+
+            let keys = Object.keys(cart);
+            if (keys.length === 0) {
+                container.innerHTML = `<p style="text-align:center; padding: 2rem; color: #888;">Aapka cart khaali hai. Pehle kuch shop se add karein!</p>`;
+                summaryBox.style.display = 'none';
+                checkoutBox.style.display = 'none';
+                return;
+            }
+
+            let html = '';
+            let subtotal = 0;
+
+            for (let itemName in cart) {
+                let itemTotal = cart[itemName].price * cart[itemName].qty;
+                subtotal += itemTotal;
+                html += `
+                    <div class="cart-item-row">
+                        <div class="cart-item-header">
+                            <span>${itemName}</span>
+                            <span>Rs. ${itemTotal}</span>
+                        </div>
+                        <div class="cart-item-controls">
+                            <div class="qty-controls" style="margin-bottom:0;">
+                                <button class="qty-btn" onclick="changeQty('${itemName}', ${cart[itemName].price}, -1); renderCartPage();">-</button>
+                                <span class="qty-display">${cart[itemName].qty}</span>
+                                <button class="qty-btn" onclick="changeQty('${itemName}', ${cart[itemName].price}, 1); renderCartPage();">+</button>
+                            </div>
+                            <button class="remove-item-btn" onclick="removeFromCart('${itemName}')">Remove (✕)</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+            summaryBox.style.display = 'block';
+            checkoutBox.style.display = 'block';
+
+            let selectedDeliveryRadio = document.querySelector('input[name="delivery"]:checked');
+            if (selectedDeliveryRadio) {
+                if (selectedDeliveryRadio.value.includes('Standard')) {
+                    currentDeliveryFee = 150;
+                } else {
+                    currentDeliveryFee = 250;
+                }
+            }
+
+            let grandTotal = subtotal + currentDeliveryFee;
+
+            document.getElementById('cart-subtotal').innerText = `Rs. ${subtotal}`;
+            document.getElementById('cart-delivery-fee').innerText = `Rs. ${currentDeliveryFee}`;
+            document.getElementById('cart-total-display').innerText = `Rs. ${grandTotal}`;
+        }
+
+        function completeOrderWhatsApp() {
+            let name = document.getElementById('cust-name').value.trim();
+            let address = document.getElementById('cust-address').value.trim();
+            let phone = document.getElementById('cust-phone').value.trim();
+
+            if (!name || !address || !phone) {
+                alert('Barah-e-karam apni saari details (Name, Address, Phone) mukammal bharein!');
+                return;
+            }
+
+            localStorage.setItem('abdul_subhan_name', name);
+            localStorage.setItem('abdul_subhan_phone', phone);
+            localStorage.setItem('abdul_subhan_address', address);
+
+            let deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
+            let paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            let tid = document.getElementById('transaction-id').value.trim();
+
+            let message = `*New Order - Abdul Subhan Store*\n\n*Customer Details:*\n- Name: ${name}\n- Phone: ${phone}\n- Address: ${address}\n\n*Order Items:*\n`;
+            
+            let subtotal = 0;
+            for (let itemName in cart) {
+                let itemTotal = cart[itemName].price * cart[itemName].qty;
+                subtotal += itemTotal;
+                message += `- ${itemName} x ${cart[itemName].qty} = Rs. ${itemTotal}\n`;
+            }
+
+            let grandTotal = subtotal + currentDeliveryFee;
+
+            message += `\n*Subtotal:* Rs. ${subtotal}\n*Delivery Fee:* Rs. ${currentDeliveryFee}\n*Total Amount:* Rs. ${grandTotal}\n\n*Delivery Method:* ${deliveryMethod}\n*Payment Method:* ${paymentMethod}`;
+            
+            if ((paymentMethod === 'EasyPaisa' || paymentMethod === 'JazzCash') && tid) {
+                message += `\n*Transaction ID (TID):* ${tid}`;
+            }
+
+            let encodedMessage = encodeURIComponent(message);
+  let whatsappUrl = `https://wa.me/923712303171?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
